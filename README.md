@@ -1,6 +1,6 @@
 # porject_PTZ
-to do code :
-mutie camera where each amera postion id deffrent by (1 cm)
+to-do code :
+multi-camera where each camera position id deffrent by (1 cm)
 bring back pring cordenets 
 imlement mutie camera with slider for the number of cameras 
 bring back the main view to a peur panoramic 
