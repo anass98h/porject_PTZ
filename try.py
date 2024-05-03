@@ -124,6 +124,28 @@ def get_camera_field_of_view(camera):
     # Calculate the visible width of the panorama based on the camera's zoom level
     return int(camera.view_size[0] / camera.zoom_level)
 
+def handle_mouse_click(mouse_x, mouse_y):
+    # Calculate panorama coordinates considering the zoom level
+    click_x = int(mouse_x * main_view.panorama.get_width() / main_view.view_size[0])
+    click_y = int(mouse_y * main_view.panorama.get_height() / main_view.view_size[1])
+
+    # Center camera_1 on the clicked point, considering the zoom level
+    camera_1.x_offset = click_x - camera_1.view_size[0] * camera_1.zoom_level / 2
+    camera_1.y_offset = click_y - camera_1.view_size[1] * camera_1.zoom_level / 2
+
+    # Clamp the offsets to avoid going out of bounds and wrap horizontally if necessary
+    camera_1.x_offset = max(0, min(camera_1.panorama.get_width() - camera_1.view_size[0] * camera_1.zoom_level, camera_1.x_offset)) % camera_1.panorama.get_width()
+    camera_1.y_offset = max(0, min(camera_1.panorama.get_height() - camera_1.view_size[1] * camera_1.zoom_level, camera_1.y_offset))
+
+    # Sync camera_2's offsets to follow camera_1
+    camera_2.x_offset = (camera_1.x_offset + camera_1.view_size[0] * camera_1.zoom_level) % camera_2.panorama.get_width()
+    camera_2.y_offset = camera_1.y_offset
+    new_zoom = min(zoom_slider.max_zoom, zoom_slider.zoom)
+    zoom_slider.set_zoom(new_zoom)
+
+    # Ensure the wrapping around for camera_2 is handled correctly
+    if camera_2.x_offset + camera_2.view_size[0] * camera_2.zoom_level > camera_2.panorama.get_width():
+        camera_2.x_offset -= camera_2.panorama.get_width()
 
 def handle_events():
     global running
@@ -140,22 +162,7 @@ def handle_events():
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = event.pos
             if event.button == 1:  # Left click to center cameras and adjust for panoramic view
-                if main_view.is_static:  # Assuming main view covers the whole panorama
-                    # Translate click position to panorama coordinates considering the current zoom level
-                    click_x = int(mouse_x * main_view.panorama.get_width() / main_view.view_size[0])
-                    click_y = int(mouse_y * main_view.panorama.get_height() / main_view.view_size[1])
-
-                    # Calculate offsets to center the view on the clicked point
-                    new_x_offset = click_x - (camera_1.view_size[0] * camera_1.zoom_level) / 2
-                    new_y_offset = click_y - (camera_1.view_size[1] * camera_1.zoom_level) / 2
-
-                    # Clamp the offsets to avoid going out of bounds
-                    camera_1.x_offset = max(0, min(main_view.panorama.get_width() - camera_1.view_size[0] * camera_1.zoom_level, new_x_offset))
-                    camera_1.y_offset = max(0, min(main_view.panorama.get_height() - camera_1.view_size[1] * camera_1.zoom_level, new_y_offset))
-
-                    # Ensure camera 2 remains aligned to the right of camera 1 for panoramic alignment
-                    camera_2.x_offset = (camera_1.x_offset + camera_1.view_size[0] * camera_1.zoom_level) % camera_2.panorama.get_width()
-                    camera_2.y_offset = camera_1.y_offset
+                handle_mouse_click(mouse_x, mouse_y)
 
 
 def update_views():
