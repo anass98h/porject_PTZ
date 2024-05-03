@@ -1,6 +1,6 @@
 import pygame
 import sys
-
+import random
 def init_pygame():
     pygame.init()
     global panorama, viewport_size, screen
@@ -171,8 +171,8 @@ def render():
     main_view.render(screen)  # Render the main view at the computed position
     
     # Calculate the x and y positions for the camera views
-    camera_1_x = (viewport_size[0] // 2 - camera_1.view_size[0] )
-    camera_1_y = (viewport_size[1] - camera_1.view_size[1]) // 1.3
+    camera_1_x = (viewport_size[0] // 2 - camera_1.view_size[0])
+    camera_1_y = (viewport_size[1] - camera_1.view_size[1]) // 1.3 
     camera_1.render(screen, (camera_1_x, camera_1_y))  # Adjust the y position as needed
     
     camera_2_x = (viewport_size[0] // 2 )
