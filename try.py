@@ -168,7 +168,7 @@ def handle_events():
 def update_views():
     keys = pygame.key.get_pressed()
     camera_1.update_position(keys, {'left': pygame.K_a, 'right': pygame.K_d, 'up': pygame.K_w, 'down': pygame.K_s})
-    camera_2.update_position(keys, {'left': pygame.K_j, 'right': pygame.K_l, 'up': pygame.K_i, 'down': pygame.K_k})
+    camera_2.update_position(keys, {'left': pygame.K_a, 'right': pygame.K_d, 'up': pygame.K_w, 'down': pygame.K_s})
 
 
 def render():
@@ -178,7 +178,7 @@ def render():
     main_view.render(screen)  # Render the main view at the computed position
     
     # Calculate the x and y positions for the camera views
-    camera_1_x = (viewport_size[0] // 2 - camera_1.view_size[0])
+    camera_1_x = (viewport_size[0] // 2 - camera_1.view_size[0] )
     camera_1_y = (viewport_size[1] - camera_1.view_size[1]) // 1.3 
     camera_1.render(screen, (camera_1_x, camera_1_y))  # Adjust the y position as needed
     
