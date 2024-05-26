@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 
 # Initialize Pygame
 pygame.init()
@@ -29,8 +30,8 @@ class PTZCamera:
         self.fov_height = max(100 / self.zoom, 25)
 
     def move(self, dx, dy):
-        self.x += dx
-        self.y += dy
+        self.x += dx + random.uniform(-0.5, 0.5)  # Add some randomness to movement
+        self.y += dy + random.uniform(-0.5, 0.5)
 
     def get_fov(self):
         return [self.x - self.fov_width / 2, self.y - self.fov_height / 2, self.fov_width, self.fov_height]
@@ -60,7 +61,8 @@ def draw(cameras):
                 pygame.draw.rect(screen, red, overlap_area)
 
 def main():
-    cameras = [PTZCamera(250, 300), PTZCamera(550, 300), PTZCamera(400, 450)]
+    # create two cameras side by side
+    cameras = [PTZCamera(300, 300), PTZCamera(500, 300)]
     move_speed = 5  # Pixels per frame movement speed
 
     running = True
@@ -69,7 +71,10 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                for camera in cameras:
+                    camera.x, camera.y = mouse_pos
         keys = pygame.key.get_pressed()
         zoom_change = 0
         dx, dy = 0, 0
