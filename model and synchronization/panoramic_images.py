@@ -7,7 +7,7 @@ def init_pygame():
     viewport_size = (1920, 1080)
     screen = pygame.display.set_mode(viewport_size, pygame.DOUBLEBUF)
     pygame.display.set_caption('360 Panorama Viewer')
-    image_path = 'vignaioli_night.jpg'
+    image_path = 'model and synchronization/vignaioli_night.jpg'
     panorama = pygame.image.load(image_path).convert()
 
 class Viewport:
