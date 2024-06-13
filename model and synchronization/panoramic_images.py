@@ -179,10 +179,12 @@ def handle_events():
                 new_zoom = min(zoom_slider.max_zoom, zoom_slider.zoom + 0.1)
                 zoom_slider.set_zoom(new_zoom)
                 calculate_camera_directions()
+                adjust_camera_offsets()
             elif event.key == pygame.K_DOWN:
                 new_zoom = max(zoom_slider.min_zoom, zoom_slider.zoom - 0.1)
                 zoom_slider.set_zoom(new_zoom)
                 calculate_camera_directions()
+                adjust_camera_offsets()
             elif event.key == pygame.K_z:
                 if number_of_cameras_active < 5:
                     number_of_cameras_active += 1
@@ -192,6 +194,7 @@ def handle_events():
                 selected_camera = int(event.unicode)
                 
             elif event.key == pygame.K_j:
+                
                 globals()[f'camera_{selected_camera}'].x_offset -= 10
             elif event.key == pygame.K_l:
                 globals()[f'camera_{selected_camera}'].x_offset += 10
@@ -199,6 +202,7 @@ def handle_events():
                 globals()[f'camera_{selected_camera}'].y_offset -= 10
             elif event.key == pygame.K_k:
                 globals()[f'camera_{selected_camera}'].y_offset += 10
+                
             
             elif event.key == pygame.K_x:
                 if number_of_cameras_active > 1:
@@ -273,10 +277,11 @@ main_view = Viewport(panorama, viewport_size, is_static=True)
 number_of_cameras_active = 5
 selected_camera = 1
 camera_1 = Viewport(panorama, (320, 180))
-camera_2 = Viewport(panorama, (320, 180))
+camera_2 = Viewport(panorama, (320, 180),)
 camera_3 = Viewport(panorama, (320, 180))
 camera_4 = Viewport(panorama, (320, 180))
 camera_5 = Viewport(panorama, (320, 180))
+adjust_camera_offsets()
 
 
 zoom_slider = ZoomSlider(0.1, 2.0, 1.0, (viewport_size[0] - 50, 50), (20, 200))
