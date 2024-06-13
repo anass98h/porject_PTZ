@@ -277,7 +277,7 @@ main_view = Viewport(panorama, viewport_size, is_static=True)
 number_of_cameras_active = 5
 selected_camera = 1
 camera_1 = Viewport(panorama, (320, 180))
-camera_2 = Viewport(panorama, (320, 180),)
+camera_2 = Viewport(panorama, (320, 180))
 camera_3 = Viewport(panorama, (320, 180))
 camera_4 = Viewport(panorama, (320, 180))
 camera_5 = Viewport(panorama, (320, 180))
